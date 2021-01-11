@@ -53,6 +53,7 @@ def storeCookie():
             with open(cookie_path, 'wb') as f:
                 pickle.dump(cookies, f)
             print(i['value'])
+            break
             # return(i)
         else:
             print('no JSESSIONID in this page!')
