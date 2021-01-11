@@ -45,7 +45,7 @@ class DBDSpider(scrapy.Spider):
         a_file.write(line)
 
     def readLoadsFile(self):
-        loadsfilePath = '/Users/mya/Desktop/Development/scrapyTest/postscrape/companyInfo_Thai.json'
+        loadsfilePath = '/Users/mya/Desktop/Development/scrapyTest/postscrape/postscrape/spiders/temp/engVersion.json'
         print('------------Target Company Information------------')
         loadsdata = json.load(open(loadsfilePath))
         dumpdata = json.dumps(loadsdata)
@@ -85,15 +85,6 @@ class DBDSpider(scrapy.Spider):
             'bussiness_type': raw_bussiness_type 
         })
 
-        # item['company_name']   = response.xpath('/html/body/div/div[4]/div[2]/div[1]/div[1]/h2/text()').get()
-        # item['company_id']     = '0105554123553'
-        # item['company_type']   = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table/tr[1]/th[2]/text()').get()
-        # item['status']         = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table/tr[3]/td[2]/text()').get()
-        # item['address']        = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tr[2]/td/text()').get()
-        # item['objective']      = objective
-        # item['directors']      = director_list
-        # item['bussiness_type'] = raw_bussiness_type
-
         self.writeJsonFile(item)
-        print('######### Target Company Information #########')
+        item = self.readLoadsFile()
         return item

@@ -66,6 +66,6 @@ driver.find_element_by_xpath('//*[@id="lang"]').click()
 
 # Search 'Opencloud' and access 'https://datawarehouse.dbd.go.th/company/profile/5/0105554123553' page
 # English Version
-driver.find_element_by_xpath('//*[@id="textStr"]').send_keys('Opencloud')
-driver.find_element_by_xpath('//*[@id="form"]/div/button').click()
-driver.find_element_by_xpath('//*[@id="fixTable"]/tbody/tr').click()
+# driver.find_element_by_xpath('//*[@id="textStr"]').send_keys('Opencloud')
+# driver.find_element_by_xpath('//*[@id="form"]/div/button').click()
+# driver.find_element_by_xpath('//*[@id="fixTable"]/tbody/tr').click()
