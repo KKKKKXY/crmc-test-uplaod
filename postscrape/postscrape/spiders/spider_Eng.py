@@ -9,7 +9,7 @@ import json
 from postscrape.items import PostscrapeItem
 
 class DBDSpider(scrapy.Spider):
-    name = "dbd"
+    name = "dbd_eng"
     headers = {
     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_0_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.88 Safari/537.36'
     }
@@ -41,15 +41,16 @@ class DBDSpider(scrapy.Spider):
     def writeJsonFile(self, data):
         filePath = '/Users/mya/Desktop/Development/scrapyTest/postscrape/postscrape/spiders/temp/engVersion.json'
         a_file = open(filePath, "w", encoding='utf-8')
-        line = json.dumps(dict(data), ensure_ascii=False) + "\n"
+        line = json.dumps(data, ensure_ascii=False) + "\n"
         a_file.write(line)
 
     def readLoadsFile(self):
-        loadsfilePath = '/Users/mya/Desktop/Development/scrapyTest/postscrape/companyInfo_Thai.json'
+        loadsfilePath = '/Users/mya/Desktop/Development/scrapyTest/postscrape/postscrape/spiders/temp/engVersion.json'
         print('------------Target Company Information------------')
         loadsdata = json.load(open(loadsfilePath))
-        dumpdata = json.dumps(loadsdata)
-        print(dumpdata)
+        print(loadsdata)
+        return loadsdata
+
 
     def parse(self, response):
         print('------------START SCRAPING------------')
@@ -72,9 +73,24 @@ class DBDSpider(scrapy.Spider):
         if raw_bussiness_type == '-':
             raw_bussiness_type = response.xpath('/html/body/div/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[3]/div[2]/div/p/text()').get().strip()
 
-        item = {}
-        item['companies'] = []
-        item['companies'].append({
+        tel = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[3]/td[2]/text()').get()
+        if tel == None:
+            tel = 'No Data'
+
+        fax = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[4]/td[2]/text()').get()
+        if fax == None:
+            fax = 'No Data'
+
+        website = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[5]/td[2]/text()').get()
+        if website == None:
+            website = 'No Data'
+
+        email = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tbody/tr[6]/td[2]/text()').get()
+        if email == None:
+            email = 'No Data'
+
+        item = []
+        item.append({
             'company_name': response.xpath('/html/body/div/div[4]/div[2]/div[1]/div[1]/h2/text()').get(),
             'company_id': '0105554123553',
             'company_type': response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table/tr[1]/th[2]/text()').get(),
@@ -82,18 +98,13 @@ class DBDSpider(scrapy.Spider):
             'address': response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tr[2]/td/text()').get(),
             'objective': objective,
             'directors': director_list,
-            'bussiness_type': raw_bussiness_type 
+            'bussiness_type': raw_bussiness_type,
+            'tel': tel,
+            'fax': fax,
+            'website': website,
+            'email': email,
         })
 
-        # item['company_name']   = response.xpath('/html/body/div/div[4]/div[2]/div[1]/div[1]/h2/text()').get()
-        # item['company_id']     = '0105554123553'
-        # item['company_type']   = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table/tr[1]/th[2]/text()').get()
-        # item['status']         = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[1]/table/tr[3]/td[2]/text()').get()
-        # item['address']        = response.xpath('/html/body/div[1]/div[4]/div[2]/div[1]/div[2]/div[2]/div[1]/div[1]/div[2]/table/tr[2]/td/text()').get()
-        # item['objective']      = objective
-        # item['directors']      = director_list
-        # item['bussiness_type'] = raw_bussiness_type
-
         self.writeJsonFile(item)
-        print('######### Target Company Information #########')
+        item = self.readLoadsFile()
         return item
