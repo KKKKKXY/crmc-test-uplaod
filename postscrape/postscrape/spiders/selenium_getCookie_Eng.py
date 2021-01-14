@@ -21,9 +21,9 @@ print(driver.title)
 # let user input captcha firsty and click 'login' 
 def getAndStoreCookieAfterLogin():
     for i in range(10):
-        driver.execute_script("alert('Before starting scrapy, Please enter captcha code and login first!');")
-        time.sleep(3)
-        driver.switch_to.alert.accept()
+        # driver.execute_script("alert('Before starting scrapy, Please enter captcha code and login first!');")
+        # time.sleep(3)
+        # driver.switch_to.alert.accept()
         time.sleep(10)
         if 'Home' in driver.title:
             # load cookie
@@ -36,9 +36,9 @@ def getAndStoreCookieAfterLogin():
                     with open(cookie_path, 'wb') as f:
                         pickle.dump(cookies, f)
                     print(i['value'])
-                    driver.execute_script("alert('Starting Scrapy...');")
-                    time.sleep(2)
-                    driver.switch_to.alert.accept()
+                    # driver.execute_script("alert('Starting Scrapy...');")
+                    # time.sleep(2)
+                    # driver.switch_to.alert.accept()
                     break
                 else:
                     print('no JSESSIONID in this page!')
